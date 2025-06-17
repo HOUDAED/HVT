@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogue Produits</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Supprimer la ligne avec unpkg -->
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="company-brand">Harvestek Solution SARL</h1>
+            <div class="company-subtitle">Solutions Innovantes pour l'Agriculture Moderne</div>
+            <h1>Catalogue Produits</h1>
+            <div class="filters">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Rechercher un produit...">
+                    <button id="searchButton">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                </div>
+                <select id="categoryFilter">
+                    <option value="">Toutes les catégories</option>
+                </select>
+            </div>
+        </header>
+        <main>
+            <div id="loading-spinner" class="spinner hidden"></div>
+            <div id="error-message" class="error-message hidden"></div>
+            <div id="connection-status" class="connection-status hidden">
+                <span class="status-dot"></span>
+                <span class="status-text">Connexion...</span>
+            </div>
+            <div id="products-grid"></div>
+            <div class="pagination">
+                <button id="prevPage" disabled>Precedent</button>
+                <span id="pageInfo">Page 1</span>
+                <button id="nextPage">Suivant</button>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modification de l'initialisation de Supabase -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script>
+        console.log('Initialisation de Supabase...');
+        try {
+            const supabaseClient = supabase.createClient(
+                'https://snkldzuytinzfeczhpno.supabase.co',
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNua2xkenV5dGluemZlY3pocG5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MTY3OTIsImV4cCI6MjA2NTQ5Mjc5Mn0.FCwI_L1z-3yQfUtpESjFpRr2QDpR-anNDPUT5j2VfSM'
+            );
+            window.supabaseClient = supabaseClient;
+            console.log('Client Supabase créé avec succès', supabaseClient);
+        } catch (error) {
+            console.error('Erreur d\'initialisation:', error);
+        }
+    </script>
+    <script src="script.js"></script>
+    <div id="productModal" class="modal">
+        <div id="modalContent" class="modal-content">
+            <span class="close-modal" onclick="closeProductModal()">&times;</span>
+        </div>
+    </div>
+</body>
+</html>
