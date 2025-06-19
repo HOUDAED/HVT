@@ -21,7 +21,6 @@
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                         </svg>
-                    </button>
                 </div>
                 <select id="categoryFilter">
                     <option value="">Toutes les catégories</option>
@@ -44,20 +43,15 @@
         </main>
     </div>
     
-    <!-- Modification de l'initialisation de Supabase -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
     <script>
-        console.log('Initialisation de Supabase...');
-        try {
-            const supabaseClient = supabase.createClient(
-                'https://snkldzuytinzfeczhpno.supabase.co',
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNua2xkenV5dGluemZlY3pocG5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MTY3OTIsImV4cCI6MjA2NTQ5Mjc5Mn0.FCwI_L1z-3yQfUtpESjFpRr2QDpR-anNDPUT5j2VfSM'
-            );
-            window.supabaseClient = supabaseClient;
-            console.log('Client Supabase créé avec succès', supabaseClient);
-        } catch (error) {
-            console.error('Erreur d\'initialisation:', error);
-        }
+        
+        const supabaseClient = supabase.createClient(
+            window.config.supabase.url,
+            window.config.supabase.anonKey
+        );
+        window.supabaseClient = supabaseClient;
     </script>
     <script src="script.js"></script>
     <div id="productModal" class="modal">
