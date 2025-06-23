@@ -139,9 +139,10 @@ async function loadProducts() {
         const startRange = (currentPage - 1) * PAGE_SIZE;
         const endRange = startRange + PAGE_SIZE - 1;
 
+        // FIX: Use the same select as in filterProducts for correct category join
         const { data, error, count } = await supabase
             .from('produits')
-            .select('*, categories(*)', { count: 'exact' })
+            .select('*, categories!inner(*)', { count: 'exact' })
             .range(startRange, endRange);
 
         if (error) throw error;
@@ -188,13 +189,14 @@ function renderProducts(products) {
 
     productsGrid.innerHTML = products.map(product => `
         <div class="product-card" onclick="showProductDetails(${product.id})">
-            <img src="${escapeHtml(product.image_url || 'placeholder.jpg')}" 
-                 alt="${escapeHtml(product.nom)}"
-                 onerror="this.onerror=null; this.src='placeholder.jpg';"
-                 loading="lazy">
-            <div class="product-name">${escapeHtml(product.nom)}</div>
-            <div class="product-category">${escapeHtml(product.categories?.nom || 'Non catégorisé')}</div>
-            <div class="product-price">${Number(product.prix || 0).toFixed(2)} FCFA</div>
+            <div class="image-wrapper">
+                <img src="${product.image_url}" alt="${product.nom}">
+            </div>
+            <div class="product-info-block">
+                <div class="product-name">${product.nom}</div>
+                <div class="product-category">${product.categories?.nom || ''}</div>
+                <div class="product-price">${Number(product.prix_detail || 0).toLocaleString()} FCFA</div>
+            </div>
         </div>
     `).join('');
 }
@@ -220,9 +222,19 @@ window.showProductDetails = function(productId) {
             <div class="product-info">
                 <h2>${escapeHtml(product.nom)}</h2>
                 <p class="product-category">${escapeHtml(product.categories?.nom || 'Non catégorisé')}</p>
-                <p class="product-description">${escapeHtml(product.description || 'Aucune description disponible')}</p>
-                <p class="product-price">${Number(product.prix || 0).toFixed(2)} FCFA</p>
-                <p class="product-date">Ajouté le: ${new Date(product.create_at).toLocaleDateString()}</p>
+                <p class="product-description">
+                    ${escapeHtml(product.description || 'Aucune description disponible')}
+                </p>
+                <div class="product-prices">
+                    <div class="prix-detail">
+                        <span class="prix-label">Prix détail&nbsp;:</span>
+                        <span class="prix-value">${Number(product.prix_detail || 0).toLocaleString()} FCFA</span>
+                    </div>
+                    <div class="prix-gros">
+                        <span class="prix-label">Prix en gros&nbsp;:</span>
+                        <span class="prix-value">${Number(product.prix_gros || 0).toLocaleString()} FCFA</span>
+                    </div>
+                </div>
             </div>
         </div>
     `;
@@ -291,7 +303,8 @@ async function filterProducts() {
             query = query.ilike('nom', `%${searchTerm}%`);
         }
 
-        if (categoryId && categoryId !== 'all') {
+        // FIX: Check for empty string, not 'all'
+        if (categoryId) {
             // Changed to use the correct foreign key relationship
             query = query.eq('categories.id', categoryId);
         }
