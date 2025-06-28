@@ -218,6 +218,15 @@ h1::after {
     padding: 0 2px;
 }
 
+.product-info h2 {
+    color: var(--accent-primary); /* Vert vif, bien visible */
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    text-shadow: 0 2px 8px rgba(46,204,113,0.10), 0 1px 2px rgba(0,0,0,0.10);
+    letter-spacing: 0.5px;
+}
+
 .product-name {
     font-weight: 600;
     font-size: 1.1rem;
@@ -388,8 +397,12 @@ h1::after {
     padding: 0 2px;
 }
 .product-info h2 {
-    margin: 0 0 8px 0;
+    color: var(--accent-primary); /* Vert vif, bien visible */
     font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    text-shadow: 0 2px 8px rgba(46,204,113,0.10), 0 1px 2px rgba(0,0,0,0.10);
+    letter-spacing: 0.5px;
 }
 .product-info .product-category,
 .product-info .product-description,
