@@ -269,6 +269,18 @@ function setupEventListeners() {
     searchInput.addEventListener('input', handleSearch);
     categoryFilter.addEventListener('change', handleCategoryChange);
     
+    prevPageBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            filterProducts();
+        }
+    });
+
+    nextPageBtn.addEventListener('click', () => {
+        currentPage++;
+        filterProducts();
+    });
+    
     // Cleanup function
     return () => {
         searchInput.removeEventListener('input', handleSearch);
