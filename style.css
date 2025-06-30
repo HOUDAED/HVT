@@ -423,6 +423,10 @@ h1::after {
         max-width: 99vw;
         aspect-ratio: 1/1;
     }
+
+    .connection-status {
+        display: none;
+    }
 }
 
 /* --- Amélioration du bouton de fermeture --- */
